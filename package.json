@@ -1,0 +1,27 @@
+{
+  "name": "pc-control-panel-pro",
+  "version": "2.0.0",
+  "description": "Профессиональная панель управления Windows",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "author": "Даниил Костарев",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "com.daniel.pccontrolpro",
+    "productName": "Windows Control Panel Pro",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    }
+  }
+}

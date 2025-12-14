@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Control Panel Pro</title>
+    <style>
+        /* ИСПРАВЛЕННЫЕ ШРИФТЫ */
+        @font-face {
+            font-family: 'SystemFont';
+            src: local('Segoe UI'), local('Arial'), local('Helvetica');
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SystemFont', 'Segoe UI', 'Arial', 'Helvetica', sans-serif !important;
+        }
+        
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        
+        body {
+            background: #000000;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .intro-container {
+            text-align: center;
+            padding: 40px;
+            width: 100%;
+            animation: fadeIn 1s ease;
+        }
+        
+        .logo-text {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #00b4db, #0083b0, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            font-family: 'SystemFont', 'Segoe UI', 'Arial', sans-serif !important;
+        }
+        
+        .team-name {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #ffffff;
+            opacity: 0.9;
+            font-family: 'SystemFont', 'Segoe UI', 'Arial', sans-serif !important;
+        }
+        
+        .presents {
+            font-size: 28px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 50px;
+            font-weight: 500;
+            font-family: 'SystemFont', 'Segoe UI', 'Arial', sans-serif !important;
+        }
+        
+        .app-title {
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            font-family: 'SystemFont', 'Segoe UI', 'Arial', sans-serif !important;
+        }
+        
+        .description {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+            font-family: 'SystemFont', 'Segoe UI', 'Arial', sans-serif !important;
+        }
+        
+        .loading-container {
+            width: 300px;
+            margin: 30px auto;
+        }
+        
+        .loading-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+            animation: loading 7s ease forwards;
+        }
+        
+        .skip-btn {
+            margin-top: 40px;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-family: 'SystemFont', 'Segoe UI', 'Arial', sans-serif !important;
+        }
+        
+        .skip-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .hint {
+            margin-top: 15px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: 'SystemFont', 'Segoe UI', 'Arial', sans-serif !important;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        @media (max-width: 768px) {
+            .logo-text {
+                font-size: 36px;
+            }
+            .team-name {
+                font-size: 28px;
+            }
+            .app-title {
+                font-size: 32px;
+            }
+            .description {
+                font-size: 16px;
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="intro-container">
+        <div class="logo-text">CTRL+ALT+DELITED</div>
+        <div class="team-name">TEAM</div>
+        <div class="presents">Представляет</div>
+        <div class="app-title">Windows Control Panel Pro</div>
+        <div class="description">
+            Профессиональный инструмент для управления системой Windows.<br>
+            Более 20 функций для администрирования, оптимизации и контроля.
+        </div>
+        
+        <div class="loading-container">
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+        
+        <button class="skip-btn" id="skipBtn">ПРОПУСТИТЬ →</button>
+        <div class="hint">Нажмите ESC для пропуска</div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+        
+        // Пропуск анимации
+        function skipAnimation() {
+            document.querySelector('.intro-container').style.animation = 'fadeOut 0.5s ease forwards';
+            setTimeout(() => {
+                ipcRenderer.invoke('skip-intro');
+            }, 500);
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            // Автоматический переход через 7 секунд
+            setTimeout(() => {
+                skipAnimation();
+            }, 7000);
+            
+            // Обработчики событий для пропуска
+            document.getElementById('skipBtn').addEventListener('click', skipAnimation);
+            
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    skipAnimation();
+                }
+            });
+            
+            // Двойной клик для пропуска
+            document.addEventListener('dblclick', skipAnimation);
+        });
+    </script>
+</body>
+</html>
